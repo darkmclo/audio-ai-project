@@ -164,7 +164,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../audio-ai-project/images/1.jpeg</pixmap>
+        <pixmap>images/1.jpeg</pixmap>
        </property>
        <property name="scaledContents">
         <bool>false</bool>
@@ -226,7 +226,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../audio-ai-project/images/3.jpeg</pixmap>
+        <pixmap>images/3.jpeg</pixmap>
        </property>
       </widget>
      </item>
@@ -254,7 +254,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../audio-ai-project/images/4.jpeg</pixmap>
+        <pixmap>images/4.jpeg</pixmap>
        </property>
       </widget>
      </item>
@@ -282,11 +282,34 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../audio-ai-project/images/2.jpeg</pixmap>
+        <pixmap>images/2.jpeg</pixmap>
        </property>
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QPushButton" name="btnImport">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>530</y>
+      <width>101</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Importar</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="txtFilename">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>530</y>
+      <width>331</width>
+      <height>28</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

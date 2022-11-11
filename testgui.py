@@ -6,7 +6,10 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-
+import sys
+from PyQt5 import QtWidgets, uic
+from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QMainWindow, QPushButton
+from PyQt5.uic import loadUi
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
