@@ -1,9 +1,48 @@
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QMessageBox, QMainWindow, QPushButton, QVBoxLayout, QLabel, QLineEdit
+from PyQt5.QtWidgets import QWidget, QDialog, QApplication, QFileDialog, QMessageBox, QMainWindow, QPushButton, QVBoxLayout, QLabel, QLineEdit
+from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtGui import QMovie
 from PyQt5.uic import loadUi
+import matplotlib.pyplot as plt
 import os
 import sys 
 import subprocess
+import time
+
+"""
+class LoadWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.show()
+"""
+
+class LoadingScreen(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setFixedSize(300,300)
+        self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.CustomizeWindowHint)
+
+        self.label_animation = QLabel(self)
+
+        self.movie = QMovie('images/loading_screen.gif')
+        self.label_animation.setMovie(self.movie)
+
+        timer = QTimer(self)
+
+        self.startAnimation()
+        timer.singleShot(3000, self.stopAnimation)
+
+        self.show()
+
+    def startAnimation(self):
+        self.movie.start()
+
+    def stopAnimation(self):
+        self.movie.stop()
+        self.close()
+
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -11,6 +50,10 @@ class MainWindow(QMainWindow):
         uic.loadUi('testgui.ui',self)
         self.btnImport.clicked.connect(self.browse_files)
         self.btnProcess.clicked.connect(self.process_files)
+        self.btnGraphic.clicked.connect(self.show_graphic)
+
+        self.loading_screen = LoadingScreen()
+        self.show()
 
         global filenameSel
         filenameSel = ""
@@ -32,7 +75,8 @@ class MainWindow(QMainWindow):
         #self.lblOutput.setText(stdouterr)
         #subprocess.call("spleeter separate -o audio_output -p spleeter:5stems "+ str(self.txtFilename.text() ))
         if filenameSel:
-            cmd_conda = "cd ~/spleeter && . ~/miniconda3/etc/profile.d/conda.sh && conda activate && spleeter separate -o audio_output -p spleeter:5stems "+ str(filenameSel) +""
+            current_timestamp = time.time()
+            cmd_conda = "cd ~/spleeter && mkdir -p "+ str(current_timestamp) + " && . ~/miniconda3/etc/profile.d/conda.sh && conda activate && spleeter separate -o "+str(current_timestamp)+"/audio_output -p spleeter:5stems "+ str(filenameSel) +""
             stdouterr = os.popen(cmd_conda).read()
             self.lblOutput.setText("Archivo procesado")
             #subprocess.call("spleeter separate -o audio_output -p spleeter:5stems "+ str(fname))
@@ -57,6 +101,19 @@ class MainWindow(QMainWindow):
             #subprocess.call("spleeter separate -o audio_output -p spleeter:5stems "+ str(fname))
         else:
             self.show_dialog()
+
+    def show_graphic(self):
+        fig, ax1 = plt.subplots()
+        plt.subplots_adjust(hspace=0)
+
+        x = range(0, 10)
+        y1 = range(0, 10)
+        y2 = range(10, 0, -1)
+
+        ax1.plot(y1, y2)
+        ax1.set(xlabel="Tiempo",ylabel="Amplitud")
+
+        plt.show()
 
     def show_dialog(self):
         dialog = QMessageBox()
