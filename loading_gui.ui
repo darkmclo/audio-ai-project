@@ -29,14 +29,26 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>150</x>
      <y>60</y>
-     <width>121</width>
+     <width>91</width>
      <height>91</height>
     </rect>
    </property>
+   <property name="maximumSize">
+    <size>
+     <width>200</width>
+     <height>200</height>
+    </size>
+   </property>
    <property name="text">
-    <string>LOADING.GIF</string>
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>images/loading_screen.gif</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>

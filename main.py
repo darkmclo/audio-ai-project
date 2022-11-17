@@ -17,9 +17,29 @@ class LoadWindow(QWidget):
         self.show()
 """
 
+class ImportScreen(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('import_gui.ui',self)
+
+        self.btnProcess.clicked.connect(self.abrirVentana)
+
+        self.show()
+
+    def abrirVentana(self):
+        
+        self.loading_screen = LoadingScreen()
+        self.cerrarVentana()
+
+    def cerrarVentana(self):
+        self.close()
+
+
 class LoadingScreen(QWidget):
     def __init__(self):
         super().__init__()
+        uic.loadUi('loading_gui.ui',self)
+        """
         self.setFixedSize(300,300)
         self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.CustomizeWindowHint)
 
@@ -33,6 +53,8 @@ class LoadingScreen(QWidget):
         self.startAnimation()
         timer.singleShot(3000, self.stopAnimation)
 
+
+        """
         self.show()
 
     def startAnimation(self):
@@ -63,6 +85,7 @@ class MainWindow(QMainWindow):
         self.txtFilename.setText(fname[0])
         global filenameSel
         filenameSel = self.txtFilename.text()
+        full = full
     
     def process_files(self):
         """
@@ -76,7 +99,7 @@ class MainWindow(QMainWindow):
         #subprocess.call("spleeter separate -o audio_output -p spleeter:5stems "+ str(self.txtFilename.text() ))
         if filenameSel:
             current_timestamp = time.time()
-            cmd_conda = "cd ~/spleeter && mkdir -p "+ str(current_timestamp) + " && . ~/miniconda3/etc/profile.d/conda.sh && conda activate && spleeter separate -o "+str(current_timestamp)+"/audio_output -p spleeter:5stems "+ str(filenameSel) +""
+            cmd_conda = "cd ~/spleeter && . ~/miniconda3/etc/profile.d/conda.sh && conda activate && spleeter separate -o "+str(current_timestamp)+"/audio_output -p spleeter:5stems "+ str(filenameSel) +""
             stdouterr = os.popen(cmd_conda).read()
             self.lblOutput.setText("Archivo procesado")
             #subprocess.call("spleeter separate -o audio_output -p spleeter:5stems "+ str(fname))
@@ -122,10 +145,17 @@ class MainWindow(QMainWindow):
         dialog.exec_()
 
 app = QApplication(sys.argv)
-mainwindow = MainWindow()
+
+widget_import = ImportScreen()
+
+widget_import.show()
+
+"""
+mainwindow = LoadingScreen()
 mainwindow.setFixedWidth(800)
 mainwindow.setFixedHeight(600)
 mainwindow.show()
+"""
 
 app.exec_()
 
