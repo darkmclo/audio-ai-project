@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>LoadingScreen</class>
+ <widget class="QWidget" name="LoadingScreen">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Cargando...</string>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -26,7 +26,7 @@
     <string>Cargando...</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="lbl_gif">
    <property name="geometry">
     <rect>
      <x>150</x>
@@ -43,9 +43,6 @@
    </property>
    <property name="text">
     <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap>images/loading_screen.gif</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
