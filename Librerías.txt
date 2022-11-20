@@ -1,0 +1,22 @@
+Librerías:
+
+- PyQt5
+- Spleeter
+- Conda
+- Librosa
+- Matplotlib
+
+- Cálculo de procesos
+
+
+pip install matplotlib
+pip install numpy
+pip install librosa
+pip install ffmpeg 
+
+pip install pyqt5 
+sudo apt install ffmpeg 
+conda install -c conda-forge ffmpeg libsndfile
+pip install spleeter 
+
+#mkdir -p "+ str(current_timestamp) + "

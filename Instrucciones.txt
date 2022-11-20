@@ -1,0 +1,28 @@
+
+    Requerimientos previos:
+        - Python
+        - pip
+
+    Opcional:
+        - Jupyter
+
+1. Instalar Conda (como mínimo Miniconda, aunque la distribución completa de Anaconda es funcional)
+    bash Miniconda_xxxx.sh
+
+2. Activar entorno Conda
+    conda activate
+
+3. Instalar las librerías:
+    pip install matplotlib
+    pip install librosa
+    pip install pyqt5
+
+4. Instalar Spleeter y sus dependencias:
+    conda install -c conda-forge ffmpeg libsndfile
+    pip install spleeter 
+
+5. Abrir el fichero "main.py" en un IDE o editor compatible con Python y realizar un build (ejecutar) del archivo para compilar el programa.
+
+
+Repositorio del proyecto:
+https://github.com/darkmclo/audio-ai-project
