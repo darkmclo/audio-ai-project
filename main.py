@@ -325,7 +325,7 @@ class MainWindow(QMainWindow):
             "&& conda activate "+
             "&& spleeter separate -o "+str(current_timestamp)+" -p spleeter:5stems '"+ str(filenameSel) +"'")
             stdouterr = os.popen(cmd_conda).read()
-            cmd_output = "/home/esteban/spleeter/"+str(current_timestamp)+""
+            cmd_output = "/home/spartan/spleeter/"+str(current_timestamp)+""
             print(cmd_output)
             estado_new_directorio = os.path.isdir(cmd_output)
             print("Folder flag: "+str(estado_new_directorio))
@@ -338,7 +338,7 @@ class MainWindow(QMainWindow):
                 self.main_screen.filelocation_1.setText(cmd_output)
                 self.main_screen.show()
             else:
-                self.show_dialog("Ocurrio un error")
+                self.show_dialog("Un error ha ocurrido")
                 self.close()
             #self.lblOutput.setText("Archivo procesado")
             #subprocess.call("spleeter separate -o audio_output -p spleeter:5stems "+ str(fname))
