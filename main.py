@@ -10,6 +10,7 @@ import sys
 import subprocess
 import time
 import os.path
+from pathlib import Path
 
 """
 class LoadWindow(QWidget):
@@ -162,13 +163,23 @@ class ImportScreen(QMainWindow):
             print("Contenido de la variable con el archivo seleccionado: "+ str(filenameSel))
             self.main_screen = MainWindow()
             self.main_screen.backend_processing(filenameSel)
-            self.main_screen.show()
+            self.loading_screen.close()
+            #self.backend_thread(filenameSel)
+            #self.main_screen.show()
             
             #self.main_screen.backend_processing(filenameSel)
             #self.loading_screen.backend_processing()
         else:
             self.show_dialog()
 
+    def backend_thread(self, filenameSel: str):
+        t1=Thread(target=self.main_screen.backend_processing(filenameSel))
+        t1.start()
+
+    def backend_worker(self, filenameSel: str):
+        self.thread[1] = ThreadClass(parent=None,index=1)
+        self.thread[1].start()
+        self.thread[1].any_signal.connect(self.main_screen.backend_processing(filenameSel))
 
     def show_dialog(self):
         dialog = QMessageBox()
@@ -325,7 +336,8 @@ class MainWindow(QMainWindow):
             "&& conda activate "+
             "&& spleeter separate -o "+str(current_timestamp)+" -p spleeter:5stems '"+ str(filenameSel) +"'")
             stdouterr = os.popen(cmd_conda).read()
-            cmd_output = "/home/spartan/spleeter/"+str(current_timestamp)+""
+            home_folder = str(Path.home())
+            cmd_output = str(home_folder) + "/spleeter/"+str(current_timestamp)+""
             print(cmd_output)
             estado_new_directorio = os.path.isdir(cmd_output)
             print("Folder flag: "+str(estado_new_directorio))
@@ -333,9 +345,19 @@ class MainWindow(QMainWindow):
             if estado_new_directorio == True:
                 #cmd_output_file1 = cmd_output + str(cmd_output)
                 self.close()
+
+                project_file_dir = str(cmd_output) + "/" + os.path.basename(filenameSel).split('.')[0]
+                project_audio_1 = project_file_dir + "/" + "bass.wav"
+                project_audio_2 = project_file_dir + "/" + "drums.wav"
+                project_audio_3 = project_file_dir + "/" + "other.wav"
+                project_audio_4 = project_file_dir + "/" + "piano.wav"
+                project_audio_5 = project_file_dir + "/" + "vocals.wav"
                 #Abrir ventana principal
                 self.main_screen = MainWindow()
-                self.main_screen.filelocation_1.setText(cmd_output)
+                self.main_screen.filelocation_1.setText(project_audio_1)
+                self.main_screen.filelocation_2.setText(project_audio_2)
+                self.main_screen.filelocation_3.setText(project_audio_3)
+                self.main_screen.filelocation_4.setText(project_audio_4)
                 self.main_screen.show()
             else:
                 self.show_dialog("Un error ha ocurrido")
