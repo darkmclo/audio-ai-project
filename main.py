@@ -12,6 +12,10 @@ import time
 import os.path
 from pathlib import Path
 
+import numpy as np
+from glob import glob as glob
+import librosa as lr
+
 """
 class LoadWindow(QWidget):
     def __init__(self):
@@ -21,6 +25,19 @@ class LoadWindow(QWidget):
 """
 
 global filenameSel
+
+class graficos(FigureCanvas):
+    def __init__(self, dir_file: str):
+        self.fig, self.ax = plt.subplots()
+        super().__init__(self.fig)
+        audio_files = glob(dir_file)
+
+        audio, sfreq = lr.load(audio_files[0])
+        time = np.arange(0, len(audio)) / sfreq
+
+        self.ax.plot(time,audio)
+        self.ax.set(xlabel="Tiempo",ylabel="Amplitud")
+
 
 class graphic_1(FigureCanvas):
     def __init__(self, parent=None):
@@ -113,8 +130,10 @@ class ImportScreen(QMainWindow):
         print(current_dir)
 
         self.main_screen = MainWindow()
-        self.canvas_1 = graphic_1()
-        self.canvas_2 = graphic_2()
+        dir_file = "/home/chriss/spleeter/vocals.wav"
+        dir_file2 = "/home/chriss/spleeter/vocals.wav"
+        self.canvas_alternative = graficos(dir_file)
+        self.canvas_2 = graficos(dir_file)
         self.canvas_3 = graphic_3()
         self.canvas_4 = graphic_4()
 
@@ -122,7 +141,7 @@ class ImportScreen(QMainWindow):
         #self.main_screen.frame_grafic_1.addWidget(self.canvas_1)
         #scroll_layout_1 = QtWidgets.QVBoxLayout(self)
 
-        self.main_screen.frame_graphic_1.addWidget(self.canvas_1)
+        self.main_screen.frame_graphic_1.addWidget(self.canvas_alternative)
         self.main_screen.frame_graphic_2.addWidget(self.canvas_2)
         self.main_screen.frame_graphic_3.addWidget(self.canvas_3)
         self.main_screen.frame_graphic_4.addWidget(self.canvas_4)
@@ -354,9 +373,16 @@ class MainWindow(QMainWindow):
                 project_audio_5 = project_file_dir + "/" + "vocals.wav"
                 #Abrir ventana principal
                 self.main_screen = MainWindow()
+
+                #Gráfico 1
                 self.main_screen.filelocation_1.setText(project_audio_1)
+                self.canvas_1 = graficos(project_audio_1)
+                self.main_screen.frame_graphic_1.addWidget(self.canvas_1)
+
                 self.main_screen.filelocation_2.setText(project_audio_2)
+
                 self.main_screen.filelocation_3.setText(project_audio_3)
+                
                 self.main_screen.filelocation_4.setText(project_audio_4)
                 self.main_screen.show()
             else:
