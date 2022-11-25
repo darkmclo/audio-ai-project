@@ -379,11 +379,21 @@ class MainWindow(QMainWindow):
                 self.canvas_1 = graficos(project_audio_1)
                 self.main_screen.frame_graphic_1.addWidget(self.canvas_1)
 
+                #Grafico 2
                 self.main_screen.filelocation_2.setText(project_audio_2)
+                self.canvas_2 = graficos(project_audio_2)
+                self.main_screen.frame_graphic_2.addWidget(self.canvas_2)
 
+                #Grafico 3
                 self.main_screen.filelocation_3.setText(project_audio_3)
-                
+                self.canvas_3 = graficos(project_audio_3)
+                self.main_screen.frame_graphic_3.addWidget(self.canvas_3)
+
+                #Grafico 4
                 self.main_screen.filelocation_4.setText(project_audio_4)
+                self.canvas_4 = graficos(project_audio_4)
+                self.main_screen.frame_graphic_4.addWidget(self.canvas_4)
+
                 self.main_screen.show()
             else:
                 self.show_dialog("Un error ha ocurrido")
