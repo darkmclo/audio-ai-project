@@ -186,7 +186,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QFrame" name="frame_grafic_1">
+         <widget class="QFrame" name="fg1">
           <property name="toolTip">
            <string>tooltip1</string>
           </property>
@@ -196,10 +196,19 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <layout class="QVBoxLayout" name="frame_graphic_1">
+             <item>
+              <widget class="QLineEdit" name="filelocation_1"/>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="frame_grafic_2">
+         <widget class="QFrame" name="fg2">
           <property name="toolTip">
            <string>tooltip1</string>
           </property>
@@ -209,10 +218,19 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <layout class="QVBoxLayout" name="frame_graphic_2">
+             <item>
+              <widget class="QLineEdit" name="filelocation_2"/>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="frame_grafic_3">
+         <widget class="QFrame" name="fg3">
           <property name="toolTip">
            <string>tooltip1</string>
           </property>
@@ -222,10 +240,19 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <layout class="QVBoxLayout" name="frame_graphic_3">
+             <item>
+              <widget class="QLineEdit" name="filelocation_3"/>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="frame_grafic_4">
+         <widget class="QFrame" name="fg4">
           <property name="toolTip">
            <string>tooltip1</string>
           </property>
@@ -235,10 +262,19 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <layout class="QVBoxLayout" name="frame_graphic_4">
+             <item>
+              <widget class="QLineEdit" name="filelocation_4"/>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="frame_grafic_5">
+         <widget class="QFrame" name="fg5">
           <property name="toolTip">
            <string>tooltip1</string>
           </property>
@@ -248,6 +284,15 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_8">
+           <item>
+            <layout class="QVBoxLayout" name="frame_graphic_5">
+             <item>
+              <widget class="QLineEdit" name="filelocation_5"/>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>

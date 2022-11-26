@@ -283,7 +283,7 @@ class LoadingScreen(QWidget):
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow,self).__init__()
-        uic.loadUi('testgui.ui',self)
+        uic.loadUi('main.ui',self)
         #self.btnImport.clicked.connect(self.browse_files)
         #self.btnProcess.clicked.connect(self.process_files)
         #self.btnGraphic.clicked.connect(self.show_graphic)
@@ -376,23 +376,33 @@ class MainWindow(QMainWindow):
 
                 #Gráfico 1
                 self.main_screen.filelocation_1.setText(project_audio_1)
+                self.main_screen.filelocation_1.setEnabled(False)
                 self.canvas_1 = graficos(project_audio_1)
                 self.main_screen.frame_graphic_1.addWidget(self.canvas_1)
 
                 #Grafico 2
                 self.main_screen.filelocation_2.setText(project_audio_2)
+                self.main_screen.filelocation_2.setEnabled(False)
                 self.canvas_2 = graficos(project_audio_2)
                 self.main_screen.frame_graphic_2.addWidget(self.canvas_2)
 
                 #Grafico 3
                 self.main_screen.filelocation_3.setText(project_audio_3)
+                self.main_screen.filelocation_3.setEnabled(False)
                 self.canvas_3 = graficos(project_audio_3)
                 self.main_screen.frame_graphic_3.addWidget(self.canvas_3)
 
                 #Grafico 4
                 self.main_screen.filelocation_4.setText(project_audio_4)
+                self.main_screen.filelocation_4.setEnabled(False)
                 self.canvas_4 = graficos(project_audio_4)
                 self.main_screen.frame_graphic_4.addWidget(self.canvas_4)
+
+                #Grafico 5
+                self.main_screen.filelocation_5.setText(project_audio_5)
+                self.main_screen.filelocation_5.setEnabled(False)
+                self.canvas_5 = graficos(project_audio_5)
+                self.main_screen.frame_graphic_5.addWidget(self.canvas_5)
 
                 self.main_screen.show()
             else:
