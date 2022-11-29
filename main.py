@@ -11,10 +11,12 @@ import subprocess
 import time
 import os.path
 from pathlib import Path
+import webbrowser
 
 import numpy as np
 from glob import glob as glob
 import librosa as lr
+import librosa.display
 
 """
 class LoadWindow(QWidget):
@@ -179,7 +181,7 @@ class ImportScreen(QMainWindow):
             self.loading_screen = LoadingScreen()
             self.loading_screen.show()
             
-            print("Contenido de la variable con el archivo seleccionado: "+ str(filenameSel))
+            print("Dirección del archivo seleccionado: "+ str(filenameSel))
             self.main_screen = MainWindow()
             self.main_screen.backend_processing(filenameSel)
             self.loading_screen.close()
@@ -330,6 +332,15 @@ class MainWindow(QMainWindow):
         else:
             self.show_dialog()
 
+    def load_spectrogram(self,filename:str):
+        y, sr = lr.load(filename)
+        D = lr.amplitude_to_db(np.abs(lr.stft(y)), ref=np.max)
+        fig, ax = plt.subplots(figsize=(15, 3))
+        img = lr.display.specshow(D, y_axis='log', x_axis='time', sr=sr)
+        ax.set(title='Logarithmic-frequency power spectrogram')
+        ax.label_outer()
+        plt.colorbar()
+
     def show_graphic(self):
         fig, ax1 = plt.subplots()
         plt.subplots_adjust(hspace=0)
@@ -342,6 +353,9 @@ class MainWindow(QMainWindow):
         ax1.set(xlabel="Tiempo",ylabel="Amplitud")
 
         plt.show()
+
+    def open_folder(self,file_dir:str):
+        webbrowser.open(file_dir)
 
     def backend_processing(self,filenameSel: str):
         if filenameSel:
@@ -365,12 +379,24 @@ class MainWindow(QMainWindow):
                 #cmd_output_file1 = cmd_output + str(cmd_output)
                 self.close()
 
+                #Files
                 project_file_dir = str(cmd_output) + "/" + os.path.basename(filenameSel).split('.')[0]
+                
                 project_audio_1 = project_file_dir + "/" + "bass.wav"
+                print("bass.wav: "+str(project_audio_1))
+
                 project_audio_2 = project_file_dir + "/" + "drums.wav"
+                print("drums.wav: "+str(project_audio_2))
+
                 project_audio_3 = project_file_dir + "/" + "other.wav"
+                print("other.wav: "+str(project_audio_3))
+
                 project_audio_4 = project_file_dir + "/" + "piano.wav"
+                print("piano.wav: "+str(project_audio_4))
+
                 project_audio_5 = project_file_dir + "/" + "vocals.wav"
+                print("vocals.wav: "+str(project_audio_5))
+
                 #Abrir ventana principal
                 self.main_screen = MainWindow()
 
@@ -403,6 +429,10 @@ class MainWindow(QMainWindow):
                 self.main_screen.filelocation_5.setEnabled(False)
                 self.canvas_5 = graficos(project_audio_5)
                 self.main_screen.frame_graphic_5.addWidget(self.canvas_5)
+
+                #Boton de Proyecto
+                self.main_screen.btnFolder.clicked.connect(lambda: self.open_folder(project_file_dir))
+                self.main_screen.btnGenSpectrum.clicked.connect(lambda: self.load_spectrogram(project_audio_1))
 
                 self.main_screen.show()
             else:

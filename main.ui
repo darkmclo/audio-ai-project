@@ -60,7 +60,7 @@
       <number>20</number>
      </property>
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="label_file">
        <property name="text">
         <string>&lt;nombre_del_archivo.mp3&gt;</string>
        </property>
@@ -113,28 +113,28 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="btnExportSelected">
        <property name="text">
         <string>Exportar seleccionado</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="btnGenSpectrum">
        <property name="text">
         <string>Generar espectrograma</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="btnTrainNet">
        <property name="text">
         <string>Entrenar</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="btnSpeechReg">
        <property name="text">
         <string>Detectar letras</string>
        </property>
@@ -151,9 +151,9 @@
       <height>221</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout"/>
+    <layout class="QHBoxLayout" name="freqGraph"/>
    </widget>
-   <widget class="QPushButton" name="btnGraphic">
+   <widget class="QPushButton" name="btnFolder">
     <property name="geometry">
      <rect>
       <x>530</x>
@@ -163,7 +163,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Gráfico</string>
+     <string>Proyecto</string>
     </property>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget_2">

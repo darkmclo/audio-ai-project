@@ -20,3 +20,52 @@ conda install -c conda-forge ffmpeg libsndfile
 pip install spleeter 
 
 #mkdir -p "+ str(current_timestamp) + "
+
+sudo apt-get install python-pyaudio python3-pyaudio
+
+
+import librosa
+import librosa.display
+
+y, sr = librosa.load('Downloads/2010-06-29_VOA_News_report_-_FIFA_to_Re-Examine_Video_Replays_After_World_Cup_Referee_Mistakes.wav', mono=False)
+fig, ax = plt.subplots(figsize=(15, 3))
+
+img = librosa.display.waveshow(y, sr=sr, ax=ax)
+ax.set(title='Envelope view, stereo')
+ax.label_outer()plt.show()
+
+
+# Load audio file to Librosa
+y, sr = librosa.load('Downloads/2010-06-29_VOA_News_report_-_FIFA_to_Re-Examine_Video_Replays_After_World_Cup_Referee_Mistakes.wav')
+
+# Converts data into short term Fourier transform. 
+# STFT converts signals such that we can know the amplitude of the given frequency at a given time
+D = librosa.amplitude_to_db(np.abs(librosa.stft(y)), ref=np.max)
+
+# Display spectogram
+fig, ax = plt.subplots(figsize=(15, 3))
+img = librosa.display.specshow(D, y_axis='log', x_axis='time', sr=sr)
+ax.set(title='Logarithmic-frequency power spectrogram')
+ax.label_outer()
+plt.colorbar()
+
+
+
+"""
+with open('test.txt',mode ='w') as file: 
+    file.write("Recognized text: ") 
+    file.write("\n") 
+    file.write(result)
+    print("Listo!")
+"""
+
+# Covert the AudioFile to AudioData, adjust for noise, cut by duration
+"""
+with audio_file as source2:
+    r.adjust_for_ambient_noise(source2)
+    audio2 = r.record(source2)
+ 
+# Generate transcription
+text_audio = r.recognize_google(audio2,language='en-IN',show_all=True)
+print(text_audio)
+"""
