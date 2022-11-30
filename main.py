@@ -40,6 +40,15 @@ class graficos(FigureCanvas):
         self.ax.plot(time,audio)
         self.ax.set(xlabel="Tiempo",ylabel="Amplitud")
 
+class cargar_espectrograma(FigureCanvas):
+    def __init__(self, filename: str):
+        y, sr = lr.load(filename)
+        D = lr.amplitude_to_db(np.abs(lr.stft(y)), ref=np.max)
+        self.fig, self.ax = plt.subplots(figsize=(15, 3))
+        super().__init__(self.fig)
+        img = lr.display.specshow(D, y_axis='log', x_axis='time', sr=sr)
+        self.ax.label_outer()
+        #plt.colorbar()
 
 class graphic_1(FigureCanvas):
     def __init__(self, parent=None):
@@ -282,6 +291,13 @@ class LoadingScreen(QWidget):
         self.movie.stop()
         self.close()
 
+class GraphicScreen(QWidget):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('spectrogram.ui',self)
+
+        
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow,self).__init__()
@@ -340,6 +356,7 @@ class MainWindow(QMainWindow):
         ax.set(title='Logarithmic-frequency power spectrogram')
         ax.label_outer()
         plt.colorbar()
+        plt.show()
 
     def show_graphic(self):
         fig, ax1 = plt.subplots()
@@ -432,8 +449,17 @@ class MainWindow(QMainWindow):
 
                 #Boton de Proyecto
                 self.main_screen.btnFolder.clicked.connect(lambda: self.open_folder(project_file_dir))
-                self.main_screen.btnGenSpectrum.clicked.connect(lambda: self.load_spectrogram(project_audio_1))
+                #self.main_screen.btnGenSpectrum.clicked.connect(lambda: cargar_espectrograma(project_audio_1))
 
+                self.spectrogram_screen = GraphicScreen()
+                self.spectro_canvas = cargar_espectrograma(project_audio_5)
+                self.spectrogram_screen.spectrogramLayout.addWidget(self.spectro_canvas)
+                #self.main_screen.btnGenSpectrum.clicked.connect()
+
+                self.main_screen.btnGenSpectrum.clicked.connect(self.spectrogram_screen.show)
+
+
+                #self.main_screen.btnGenSpectrum.clicked.connect(self.show_graphic())
                 self.main_screen.show()
             else:
                 self.show_dialog("Un error ha ocurrido")

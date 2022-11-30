@@ -19,10 +19,13 @@ sudo apt install ffmpeg
 conda install -c conda-forge ffmpeg libsndfile
 pip install spleeter 
 
+
 #mkdir -p "+ str(current_timestamp) + "
 
-sudo apt-get install python-pyaudio python3-pyaudio
+sudo apt-get install python-pyaudio
 
+pip install pyttsx3
+pip install pyaudio
 
 import librosa
 import librosa.display
