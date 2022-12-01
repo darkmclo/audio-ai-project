@@ -425,7 +425,7 @@ class MainWindow(QMainWindow):
 
                 #Grafico 2
                 self.main_screen.filelocation_2.setText(project_audio_2)
-                self.main_screen.filelocation_2.setEnabled(False)
+                self.main_screen.filelocation_2.setEnabled  (False)
                 self.canvas_2 = graficos(project_audio_2)
                 self.main_screen.frame_graphic_2.addWidget(self.canvas_2)
 
@@ -451,13 +451,52 @@ class MainWindow(QMainWindow):
                 self.main_screen.btnFolder.clicked.connect(lambda: self.open_folder(project_file_dir))
                 #self.main_screen.btnGenSpectrum.clicked.connect(lambda: cargar_espectrograma(project_audio_1))
 
-                self.spectrogram_screen = GraphicScreen()
-                self.spectro_canvas = cargar_espectrograma(project_audio_5)
-                self.spectrogram_screen.spectrogramLayout.addWidget(self.spectro_canvas)
+                #self.spectrogram_screen = GraphicScreen()
+                #self.spectro_canvas = cargar_espectrograma(project_audio_5)
+                #self.spectrogram_screen.spectrogramLayout.addWidget(self.spectro_canvas)
                 #self.main_screen.btnGenSpectrum.clicked.connect()
 
-                self.main_screen.btnGenSpectrum.clicked.connect(self.spectrogram_screen.show)
+                #self.main_screen.btnGenSpectrum.clicked.connect(self.spectrogram_screen.show)
 
+                #Spectogram Bass
+                self.spectrogram_screen_2 = GraphicScreen()
+                self.spectro_canvas_2 = cargar_espectrograma(project_audio_1)
+                self.spectrogram_screen_2.spectrogramLayout.addWidget(self.spectro_canvas_2)
+                #self.main_screen.btnGenSpectrum.clicked.connect()
+
+                self.main_screen.btnGenSpectrumBass.clicked.connect(self.spectrogram_screen_2.show)
+
+                #Spectogram Drums
+                self.spectrogram_screen_3 = GraphicScreen()
+                self.spectro_canvas_3 = cargar_espectrograma(project_audio_2)
+                self.spectrogram_screen_3.spectrogramLayout.addWidget(self.spectro_canvas_3)
+                #self.main_screen.btnGenSpectrum.clicked.connect()
+
+                self.main_screen.btnGenSpectrumDrums.clicked.connect(self.spectrogram_screen_3.show)
+
+                #Spectogram Other
+                self.spectrogram_screen_4 = GraphicScreen()
+                self.spectro_canvas_4 = cargar_espectrograma(project_audio_3)
+                self.spectrogram_screen_4.spectrogramLayout.addWidget(self.spectro_canvas_4)
+                #self.main_screen.btnGenSpectrum.clicked.connect()
+
+                self.main_screen.btnGenSpectrumOther.clicked.connect(self.spectrogram_screen_4.show)
+
+                #Spectogram Piano
+                self.spectrogram_screen_5 = GraphicScreen()
+                self.spectro_canvas_5 = cargar_espectrograma(project_audio_4)
+                self.spectrogram_screen_5.spectrogramLayout.addWidget(self.spectro_canvas_5)
+                #self.main_screen.btnGenSpectrum.clicked.connect()
+
+                self.main_screen.btnGenSpectrumPiano.clicked.connect(self.spectrogram_screen_5.show)
+
+                #Spectogram Vocals
+                self.spectrogram_screen_6 = GraphicScreen()
+                self.spectro_canvas_6 = cargar_espectrograma(project_audio_5)
+                self.spectrogram_screen_6.spectrogramLayout.addWidget(self.spectro_canvas_6)
+                #self.main_screen.btnGenSpectrum.clicked.connect()
+
+                self.main_screen.btnGenSpectrumVocals.clicked.connect(self.spectrogram_screen_6.show)
 
                 #self.main_screen.btnGenSpectrum.clicked.connect(self.show_graphic())
                 self.main_screen.show()
