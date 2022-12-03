@@ -1,6 +1,0 @@
-- Actualizar y mejorar el documento técnico. (Manual técnico y de uso)
-	- Funciones
-	- Fragmentos de código
-	- Descripción del proyecto
-	- Librerías
-	- ¿Cómo funciona?
