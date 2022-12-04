@@ -12,6 +12,7 @@ import time
 import os.path
 from pathlib import Path
 import webbrowser
+import speech_recognition as sr
 
 import numpy as np
 from glob import glob as glob
@@ -358,6 +359,25 @@ class MainWindow(QMainWindow):
         plt.colorbar()
         plt.show()
 
+    def text_to_speech(self,filename:str):
+        if filename:
+            r = sr.Recognizer()
+            audio_file = sr.AudioFile(filename)
+            with audio_file as source:
+                #print("Start talking: ")
+                r.adjust_for_ambient_noise(source)
+                audio = r.record(source)
+                #print("Stop talking.")
+            try:
+                text = r.recognize_google(audio, language='en-US') #, show_all=True
+                print(text)
+                self.show_dialog(str(text))
+            except Exception as e:
+                #print("I am here")
+                print (e)
+        else:
+            self.show_dialog("No se puede reconocer el archivo de audio para obtener el texto.")
+
     def show_graphic(self):
         fig, ax1 = plt.subplots()
         plt.subplots_adjust(hspace=0)
@@ -416,6 +436,8 @@ class MainWindow(QMainWindow):
 
                 #Abrir ventana principal
                 self.main_screen = MainWindow()
+
+                self.main_screen.label_file.setText(os.path.basename(filenameSel))
 
                 #Gráfico 1
                 self.main_screen.filelocation_1.setText(project_audio_1)
@@ -497,6 +519,8 @@ class MainWindow(QMainWindow):
                 #self.main_screen.btnGenSpectrum.clicked.connect()
 
                 self.main_screen.btnGenSpectrumVocals.clicked.connect(self.spectrogram_screen_6.show)
+
+                self.main_screen.btnSpeechReg.clicked.connect(lambda: self.text_to_speech(project_audio_5))
 
                 #self.main_screen.btnGenSpectrum.clicked.connect(self.show_graphic())
                 self.main_screen.show()
