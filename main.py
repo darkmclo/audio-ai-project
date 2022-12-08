@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QWidget, QDialog, QApplication, QFileDialog, QMessageBox, QMainWindow, QPushButton, QVBoxLayout, QLabel, QLineEdit
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, QThread
 from PyQt5.QtGui import QMovie
 from PyQt5.uic import loadUi
 import matplotlib.pyplot as plt
@@ -63,53 +63,161 @@ class graphic_1(FigureCanvas):
         self.ax.bar(nombres,tamaño,color = colores)
         #self.fig.suptitle('Gráfica',size=9)
 
-class graphic_2(FigureCanvas):
-    def __init__(self, parent=None):
-        self.fig, self.ax = plt.subplots(1, dpi=100, figsize=(5, 5),sharey=True, facecolor='gray')
-        super().__init__(self.fig)
 
-        nombres = ['10','5','7','15','20','60','30','14','17','35','20','18']
-        colores = ['blue','blue','blue','blue','blue']
-        tamaño = [10,5,7,15,20,60,30,14,17,35,20,18]
+class WorkerThread(QThread):
+    def run(self):
+        self.backend_processing("/home/chriss/projects/audio-ai-project/audio_samples/set_a/My_December_Clip.mp3")
 
-        self.ax.bar(nombres,tamaño,color = colores)
-        #self.fig.suptitle('Gráfica',size=9)
+    def backend_process(self):
+        print("Se ha comenzado el proceso de backend personalizado.")
+        for x in range(1000000):
+            print(x)
 
-class graphic_3(FigureCanvas):
-    def __init__(self, parent=None):
-        self.fig, self.ax = plt.subplots(1, dpi=100, figsize=(5, 5),sharey=True, facecolor='white')
-        super().__init__(self.fig)
+    def backend_processing(self,filenameSel: str):
+        if filenameSel:
+            print("Procesando...")
+            current_timestamp = time.time()
+            current_dir = os.getcwd()
+            cmd_conda = ("cd ~ "
+            +"&& mkdir -p spleeter "+
+            "&& cd spleeter "+
+            "&& . ~/miniconda3/etc/profile.d/conda.sh "+
+            "&& conda activate "+
+            "&& spleeter separate -o "+str(current_timestamp)+" -p spleeter:5stems '"+ str(filenameSel) +"'")
+            stdouterr = os.popen(cmd_conda).read()
+            home_folder = str(Path.home())
+            cmd_output = str(home_folder) + "/spleeter/"+str(current_timestamp)+""
+            print(cmd_output)
+            estado_new_directorio = os.path.isdir(cmd_output)
+            print("Folder flag: "+str(estado_new_directorio))
 
-        nombres = ['41','19','31','9','7','14','69']
-        colores = ['green','green','green','green','green']
-        tamaño = [41,19,31,9,7,14,69]
+            if estado_new_directorio == True:
+                #cmd_output_file1 = cmd_output + str(cmd_output)
+                #self.close()
 
-        self.ax.bar(nombres,tamaño,color = colores)
-        #self.fig.suptitle('Gráfica',size=9)
+                #Files
+                project_file_dir = str(cmd_output) + "/" + os.path.basename(filenameSel).split('.')[0]
+                
+                project_audio_1 = project_file_dir + "/" + "bass.wav"
+                print("bass.wav: "+str(project_audio_1))
 
-class graphic_4(FigureCanvas):
-    def __init__(self, parent=None):
-        self.fig, self.ax = plt.subplots(1, dpi=100, figsize=(5, 5),sharey=True, facecolor='gray')
-        super().__init__(self.fig)
+                project_audio_2 = project_file_dir + "/" + "drums.wav"
+                print("drums.wav: "+str(project_audio_2))
 
-        nombres = ['10','15','20','25','30','25','20','15','10']
-        colores = ['cyan','skyblue','cyan','skyblue','cyan','skyblue','cyan','skyblue','cyan']
-        tamaño = [10,15,20,25,30,25,20,15,10]
+                project_audio_3 = project_file_dir + "/" + "other.wav"
+                print("other.wav: "+str(project_audio_3))
 
-        self.ax.bar(nombres,tamaño,color = colores)
-        #self.fig.suptitle('Gráfica',size=9)
+                project_audio_4 = project_file_dir + "/" + "piano.wav"
+                print("piano.wav: "+str(project_audio_4))
 
-class graphic_5(FigureCanvas):
-    def __init__(self, parent=None):
-        self.fig, self.ax = plt.subplots(1, dpi=100, figsize=(5, 5),sharey=True, facecolor='white')
-        super().__init__(self.fig)
+                project_audio_5 = project_file_dir + "/" + "vocals.wav"
+                print("vocals.wav: "+str(project_audio_5))
 
-        nombres = ['15','25','30','35','40']
-        colores = ['red','red','red','red','red']
-        tamaño = [10,15,20,25,30]
+                ### VENTANA
+                #Abrir ventana principal
+                self.main_screen = MainWindow()
 
-        self.ax.bar(nombres,tamaño,color = colores)
-        self.fig.suptitle('Gráfica',size=9)
+                self.main_screen.label_file.setText(os.path.basename(filenameSel))
+
+                #Gráfico 1
+                self.main_screen.filelocation_1.setText(project_audio_1)
+                self.main_screen.filelocation_1.setEnabled(False)
+                self.canvas_1 = graficos(project_audio_1)
+                self.main_screen.frame_graphic_1.addWidget(self.canvas_1)
+
+                #Grafico 2
+                self.main_screen.filelocation_2.setText(project_audio_2)
+                self.main_screen.filelocation_2.setEnabled  (False)
+                self.canvas_2 = graficos(project_audio_2)
+                self.main_screen.frame_graphic_2.addWidget(self.canvas_2)
+
+                #Grafico 3
+                self.main_screen.filelocation_3.setText(project_audio_3)
+                self.main_screen.filelocation_3.setEnabled(False)
+                self.canvas_3 = graficos(project_audio_3)
+                self.main_screen.frame_graphic_3.addWidget(self.canvas_3)
+
+                #Grafico 4
+                self.main_screen.filelocation_4.setText(project_audio_4)
+                self.main_screen.filelocation_4.setEnabled(False)
+                self.canvas_4 = graficos(project_audio_4)
+                self.main_screen.frame_graphic_4.addWidget(self.canvas_4)
+
+                #Grafico 5
+                self.main_screen.filelocation_5.setText(project_audio_5)
+                self.main_screen.filelocation_5.setEnabled(False)
+                self.canvas_5 = graficos(project_audio_5)
+                self.main_screen.frame_graphic_5.addWidget(self.canvas_5)
+
+                #Boton de Proyecto
+                self.main_screen.btnFolder.clicked.connect(lambda: self.open_folder(project_file_dir))
+                #self.main_screen.btnGenSpectrum.clicked.connect(lambda: cargar_espectrograma(project_audio_1))
+
+                #self.spectrogram_screen = GraphicScreen()
+                #self.spectro_canvas = cargar_espectrograma(project_audio_5)
+                #self.spectrogram_screen.spectrogramLayout.addWidget(self.spectro_canvas)
+                #self.main_screen.btnGenSpectrum.clicked.connect()
+
+                #self.main_screen.btnGenSpectrum.clicked.connect(self.spectrogram_screen.show)
+
+                #Spectogram Bass
+                self.spectrogram_screen_2 = GraphicScreen()
+                self.spectro_canvas_2 = cargar_espectrograma(project_audio_1)
+                self.spectrogram_screen_2.spectrogramLayout.addWidget(self.spectro_canvas_2)
+                #self.main_screen.btnGenSpectrum.clicked.connect()
+
+                self.main_screen.btnGenSpectrumBass.clicked.connect(self.spectrogram_screen_2.show)
+
+                #Spectogram Drums
+                self.spectrogram_screen_3 = GraphicScreen()
+                self.spectro_canvas_3 = cargar_espectrograma(project_audio_2)
+                self.spectrogram_screen_3.spectrogramLayout.addWidget(self.spectro_canvas_3)
+                #self.main_screen.btnGenSpectrum.clicked.connect()
+
+                self.main_screen.btnGenSpectrumDrums.clicked.connect(self.spectrogram_screen_3.show)
+
+                #Spectogram Other
+                self.spectrogram_screen_4 = GraphicScreen()
+                self.spectro_canvas_4 = cargar_espectrograma(project_audio_3)
+                self.spectrogram_screen_4.spectrogramLayout.addWidget(self.spectro_canvas_4)
+                #self.main_screen.btnGenSpectrum.clicked.connect()
+
+                self.main_screen.btnGenSpectrumOther.clicked.connect(self.spectrogram_screen_4.show)
+
+                #Spectogram Piano
+                self.spectrogram_screen_5 = GraphicScreen()
+                self.spectro_canvas_5 = cargar_espectrograma(project_audio_4)
+                self.spectrogram_screen_5.spectrogramLayout.addWidget(self.spectro_canvas_5)
+                #self.main_screen.btnGenSpectrum.clicked.connect()
+
+                self.main_screen.btnGenSpectrumPiano.clicked.connect(self.spectrogram_screen_5.show)
+
+                #Spectogram Vocals
+                self.spectrogram_screen_6 = GraphicScreen()
+                self.spectro_canvas_6 = cargar_espectrograma(project_audio_5)
+                self.spectrogram_screen_6.spectrogramLayout.addWidget(self.spectro_canvas_6)
+                #self.main_screen.btnGenSpectrum.clicked.connect()
+
+                self.main_screen.btnGenSpectrumVocals.clicked.connect(self.spectrogram_screen_6.show)
+
+                self.main_screen.btnSpeechReg.clicked.connect(lambda: self.text_to_speech(project_audio_5))
+
+                #self.main_screen.btnGenSpectrum.clicked.connect(self.show_graphic())
+                self.main_screen.show()
+            else:
+                self.show_dialog("Un error ha ocurrido")
+                #self.close()
+            #self.lblOutput.setText("Archivo procesado")
+            #subprocess.call("spleeter separate -o audio_output -p spleeter:5stems "+ str(fname))
+        else:
+            self.show_dialog("Ocurrió un error al procesar el elemento.")
+            print("Contenido de la variable: " + str(filenameSel))
+
+    def show_dialog(self,message: str):
+        dialog = QMessageBox()
+        dialog.setWindowTitle("Mensaje")
+        dialog.setText(message)
+        dialog.exec_()
 
 class ImportScreen(QMainWindow):
     def __init__(self):
@@ -120,9 +228,19 @@ class ImportScreen(QMainWindow):
         filenameSel = ""
         self.btnImport.clicked.connect(self.browse_files)
         self.btnProcess.clicked.connect(self.process_files)
-        self.btnTest.clicked.connect(self.abrirVentana)
+        self.btnTest.clicked.connect(self.evt_btnStartProcessing)
 
         self.show()
+
+    """
+    def closeEvent(self, event):
+        quit_msg = "Are you sure you want to exit the program?"
+        reply = QMessageBox.question(self, 'Message', quit_msg, QMessageBox.Yes, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+    """
 
     def show_graphic_on_window(self):
         fig, ax1 = plt.subplots()
@@ -134,6 +252,7 @@ class ImportScreen(QMainWindow):
 
         ax1.plot(y1, y2)
         ax1.set(xlabel="Tiempo",ylabel="Amplitud")
+
 
     def abrirVentana(self):
         #self.loading_screen = LoadingScreen()
@@ -161,19 +280,13 @@ class ImportScreen(QMainWindow):
 
         self.cerrarVentana()
 
-    """
-    def graphic_1(FigureCanvas):
-        def __init__(self, parent=None):
-            self.fig, self.ax = plt.subplots(1, dpi=100, figsize=(5, 5),sharey=True, facecolor='white')
-            super().__init__(self.fig)
+    def evt_btnStartProcessing(self):
+        self.worker = WorkerThread()
+        self.worker.start()
+        self.worker.finished.connect(self.evt_btnFinishedProcessing)
 
-            nombres = ['15','25','30','35','40']
-            colores = ['red','red','red','red','red']
-            tamaño = [10,15,20,25,30]
-
-            self.ax.bar(nombres,tamaño,color = colores)
-            self.fig.suptitle('Gráfica',size=9)
-    """
+    def evt_btnFinishedProcessing(self):
+        QMessageBox.information(self, "Finalizado.","Se ha realizado el proceso.")
 
     def cerrarVentana(self):
         self.close()
@@ -197,6 +310,25 @@ class ImportScreen(QMainWindow):
             self.loading_screen.close()
             #self.backend_thread(filenameSel)
             #self.main_screen.show()
+            
+            #self.main_screen.backend_processing(filenameSel)
+            #self.loading_screen.backend_processing()
+        else:
+            self.show_dialog()
+
+    def process_files_testing(self):
+        filenameSel = self.txtFilename.text()
+        if filenameSel:
+            self.close()
+            self.loading_screen = LoadingScreen()
+            self.loading_screen.show()
+            
+            print("Dirección del archivo seleccionado: "+ str(filenameSel))
+            self.main_screen = MainWindow()
+            self.evt_btnStartProcessing()
+            self.loading_screen.close()
+            #self.backend_thread(filenameSel)
+            self.main_screen.show()
             
             #self.main_screen.backend_processing(filenameSel)
             #self.loading_screen.backend_processing()
@@ -228,57 +360,6 @@ class LoadingScreen(QWidget):
         self.lbl_gif.setMovie(loading_gif)
         loading_gif.start()
 
-        #global filenameSel
-
-        """
-        self.setFixedSize(300,300)
-        self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.CustomizeWindowHint)
-
-        self.label_animation = QLabel(self)
-
-        self.movie = QMovie('images/loading_screen.gif')
-        self.label_animation.setMovie(self.movie)
-
-        timer = QTimer(self)
-
-        self.startAnimation()
-        timer.singleShot(3000, self.stopAnimation)
-
-
-        """
-        #self.backend_processing()
-
-    """
-
-    def backend_processing(self):
-        if filenameSel:
-            current_timestamp = time.time()
-            cmd_conda = ("cd ~ "
-            +"&& mkdir -p spleeter "+
-            "&& cd spleeter "+
-            "&& . ~/miniconda3/etc/profile.d/conda.sh "+
-            "&& conda activate "+
-            "&& spleeter separate -o "+str(current_timestamp)+" -p spleeter:5stems '"+ str(filenameSel) +"'")
-            stdouterr = os.popen(cmd_conda).read()
-            cmd_output = "/home/chriss/spleeter/"+str(current_timestamp)+""
-            print(cmd_output)
-            estado_archivo = os.path.isdir(cmd_output)
-            print("Folder flag: "+str(estado_archivo))
-
-            if estado_archivo == True:
-                self.close()
-                #Abrir ventana principal
-                self.main_screen = MainWindow()
-                self.main_screen.show()
-            else:
-                self.show_dialog()
-                self.close()
-            #self.lblOutput.setText("Archivo procesado")
-            #subprocess.call("spleeter separate -o audio_output -p spleeter:5stems "+ str(fname))
-        else:
-            self.show_dialog()
-
-    """
     def show_dialog(self):
         dialog = QMessageBox()
         dialog.setWindowTitle("Mensaje")
@@ -292,12 +373,20 @@ class LoadingScreen(QWidget):
         self.movie.stop()
         self.close()
 
+    """
+    def closeEvent(self, event):
+        quit_msg = "Are you sure you want to exit the program?"
+        reply = QMessageBox.question(self, 'Message', quit_msg, QMessageBox.Yes, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+    """
+
 class GraphicScreen(QWidget):
     def __init__(self):
         super().__init__()
         uic.loadUi('spectrogram.ui',self)
-
-        
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -315,39 +404,6 @@ class MainWindow(QMainWindow):
         self.txtFilename.setText(fname[0])
         global filenameSel
         filenameSel = self.txtFilename.text()
-    
-    def process_files(self):
-        """
-        cmd_conda = "cd ~/spleeter && . ~/miniconda3/etc/profile.d/conda.sh && conda activate && spleeter separate -o audio_output -p spleeter:5stems /home/chriss/projects/audio-ai-project/audio.wav"
-        cmd = "conda activate && spleeter separate -o ~/audio_output -p spleeter:5stems "
-        cmd_full = str(cmd) + str(self.txtFilename.text())
-        cmd_test = "ls -l"
-        stdouterr = os.popen(cmd_conda).read()
-        """
-        #self.lblOutput.setText(stdouterr)
-        #subprocess.call("spleeter separate -o audio_output -p spleeter:5stems "+ str(self.txtFilename.text() ))
-        if filenameSel:
-            current_timestamp = time.time()
-            cmd_conda = "cd ~/spleeter && . ~/miniconda3/etc/profile.d/conda.sh && conda activate && spleeter separate -o "+str(current_timestamp)+"/audio_output -p spleeter:5stems "+ str(filenameSel) +""
-            stdouterr = os.popen(cmd_conda).read()
-            self.lblOutput.setText("Archivo procesado")
-            #subprocess.call("spleeter separate -o audio_output -p spleeter:5stems "+ str(fname))
-        else:
-            self.show_dialog()
-
-    def process_files_test(self):
-        filenameSel = ""
-        if filenameSel:
-            cmd_test = ("cd ~/spleeter "+
-                "&& . ~/miniconda3/etc/profile.d/conda.sh "+
-                "&& conda activate "+
-                "&& spleeter separate -o audio_output -p spleeter:5stems /home/chriss/projects/audio-ai-project/audio.wav")
-            subprocess.call(cmd_test, shell=True, executable='/bin/sh')
-
-            self.lblOutput.setText("Archivo procesado")
-            #subprocess.call("spleeter separate -o audio_output -p spleeter:5stems "+ str(fname))
-        else:
-            self.show_dialog()
 
     def load_spectrogram(self,filename:str):
         y, sr = lr.load(filename)
