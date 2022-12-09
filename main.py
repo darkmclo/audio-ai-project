@@ -534,8 +534,8 @@ class MainWindow(QMainWindow):
                 #Modelo predictivo
                 prediction_class = self.classification_model(filenameSel)
                 predicted_genre = str(prediction_class[0]).capitalize()
-                print("El género musical del archivo es: "+str(predicted_genre)
-                self.main_screen.lbl_genre.setText(str(predicted_genre))
+                print("El género musical del archivo es: "+str(predicted_genre))
+                self.main_screen.lbl_genre.setText(predicted_genre)
 
                 print("Generando graficos...")
                 #Gráfico 1
