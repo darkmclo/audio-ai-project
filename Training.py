@@ -42,8 +42,8 @@ for index_num,row in tqdm(metadata.iterrows()):
     print(f"Error: {e}")
     continue
 
-metadata.drop(labels=554, axis=0, inplace=True)
-metadata.drop(labels=555, axis=0, inplace=True)
+#metadata.drop(labels=554, axis=0, inplace=True)
+#metadata.drop(labels=555, axis=0, inplace=True)
 
 extracted_features_df=pd.DataFrame(extracted_features,columns=['feature','class'])
 extracted_features_df.head()
@@ -75,7 +75,8 @@ from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
 from tensorflow.keras.optimizers import Adam
 from sklearn import metrics
 
-num_labels = y.shape[1]
+num_labels = y.shape[1] #10
+print(num_labels)
 
 model = Sequential()
 model.add(Dense(1024,input_shape=(40,), activation="relu"))

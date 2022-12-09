@@ -1,10 +1,17 @@
+#### LIBRERÍAS
+
+# GUI
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QWidget, QDialog, QApplication, QFileDialog, QMessageBox, QMainWindow, QPushButton, QVBoxLayout, QLabel, QLineEdit
 from PyQt5.QtCore import Qt, QTimer, QThread
 from PyQt5.QtGui import QMovie
 from PyQt5.uic import loadUi
+
+#Gráficos
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+
+#Comandos del Sistema operativo
 import os
 import sys 
 import subprocess
@@ -12,12 +19,16 @@ import time
 import os.path
 from pathlib import Path
 import webbrowser
-import speech_recognition as sr
-
-import numpy as np
 from glob import glob as glob
+
+#IA
+import numpy as np
+import tensorflow
+import speech_recognition as sr
 import librosa as lr
 import librosa.display
+from sklearn.preprocessing import LabelEncoder
+
 
 """
 class LoadWindow(QWidget):
@@ -415,6 +426,31 @@ class MainWindow(QMainWindow):
         plt.colorbar()
         plt.show()
 
+    def classification_model(self,filename:str):
+        home_folder = str(Path.home())
+
+        #Importar clases del LabelEncoder
+        labelencoder = LabelEncoder()
+        labelencoder.classes_ = np.load('lbl_encoder_classes.npy')
+
+        #Importar Modelo
+        model = tensorflow.keras.models.load_model('saved_models/audio_classification_00_24_32.hdf5')
+
+        #filename=str(home_folder)+'/Music_Genre_Classification/Data/genres_original/rock/rock.00001.wav'
+        audio, sample_rate = lr.load(filename, res_type='kaiser_fast')
+        mfccs_features = lr.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40)
+        mfccs_scaled_features = np.mean(mfccs_features.T,axis=0)
+
+        print(mfccs_scaled_features)
+        mfccs_scaled_features = mfccs_scaled_features.reshape(1,-1)
+        print(mfccs_scaled_features)
+        print(mfccs_scaled_features.shape)
+        predicted_label = np.argmax(model.predict(mfccs_scaled_features), axis=-1)
+        print(predicted_label)
+        prediction_class = labelencoder.inverse_transform(predicted_label)
+        return prediction_class
+        #print("El género musical del archivo es: "+str(prediction_class[0]))
+
     def text_to_speech(self,filename:str):
         if filename:
             r = sr.Recognizer()
@@ -488,13 +524,20 @@ class MainWindow(QMainWindow):
                 print("piano.wav: "+str(project_audio_4))
 
                 project_audio_5 = project_file_dir + "/" + "vocals.wav"
-                print("vocals.wav: "+str(project_audio_5))
+                print("vocals.wav: "+str(project_audio_5))                
 
                 #Abrir ventana principal
                 self.main_screen = MainWindow()
 
                 self.main_screen.label_file.setText(os.path.basename(filenameSel))
 
+                #Modelo predictivo
+                prediction_class = self.classification_model(filenameSel)
+                predicted_genre = str(prediction_class[0]).capitalize()
+                print("El género musical del archivo es: "+str(predicted_genre)
+                self.main_screen.lbl_genre.setText(str(predicted_genre))
+
+                print("Generando graficos...")
                 #Gráfico 1
                 self.main_screen.filelocation_1.setText(project_audio_1)
                 self.main_screen.filelocation_1.setEnabled(False)
@@ -503,7 +546,7 @@ class MainWindow(QMainWindow):
 
                 #Grafico 2
                 self.main_screen.filelocation_2.setText(project_audio_2)
-                self.main_screen.filelocation_2.setEnabled  (False)
+                self.main_screen.filelocation_2.setEnabled(False)
                 self.canvas_2 = graficos(project_audio_2)
                 self.main_screen.frame_graphic_2.addWidget(self.canvas_2)
 

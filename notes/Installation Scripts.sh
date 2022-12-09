@@ -15,3 +15,5 @@ pip install pyqt5
 sudo apt install ffmpeg 
 conda install -c conda-forge ffmpeg libsndfile
 pip install spleeter
+
+pip install tqdm
